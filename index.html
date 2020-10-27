@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scavenger Hunt</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
+    <script src="js/clues.js"></script>
+    <script type="text/javascript">
+      function getClue() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const clueId = urlParams.get("i");
+        if (!clueId || !clues[clueId]) {
+          alert("Oops");
+          return;
+        }
+        return clues[clueId];
+      }
+      function onSubmit(event) {
+        const clue = getClue();
+        if (clue) {
+          const answer = document.getElementById("answer").value;
+          if (
+            answer.trim().toLowerCase() === clue.answer.trim().toLowerCase()
+          ) {
+            revealNextClue(clue.next);
+          } else {
+            alert("Wrong!");
+          }
+        }
+        event.preventDefault();
+        return false;
+      }
+      function revealNextClue(clueText) {
+        const nextClueEl = document.getElementById("next-clue");
+        nextClueEl.textContent = clueText;
+        nextClueEl.style.display = "block";
+        nextClueEl.classList.add("animate__animated", "animate__fadeIn");
+      }
+    </script>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0px;
+        padding: 15px;
+      }
+      input {
+        width: 100%;
+        font-size: 24px;
+      }
+      button {
+        margin-top: 10px;
+        width: 100%;
+        font-size: 24px;
+      }
+      #next-clue {
+        font-size: 15vh;
+      }
+    </style>
+  </head>
+  <body>
+    <form onsubmit="return onSubmit(event);">
+      <input id="answer" name="answer" />
+      <button type="submit">Submit answer</button>
+    </form>
+    <div id="next-clue" style="display: none">Next clue</div>
+  </body>
+</html>

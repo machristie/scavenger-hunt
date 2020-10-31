@@ -38,7 +38,36 @@
         const nextClueEl = document.getElementById("next-clue");
         nextClueEl.textContent = clueText;
         nextClueEl.style.display = "block";
-        nextClueEl.classList.add("animate__animated", "animate__fadeIn");
+        nextClueEl.classList.add(
+          "animate__animated",
+          "animate__fadeIn",
+          "animate__slow"
+        );
+        setTimeout(() => shuffleClue(clueText, clueText.length), 100);
+      }
+      function shuffleClue(clueText, num) {
+        const nextClueEl = document.getElementById("next-clue");
+        if (num >= 0) {
+          nextClueEl.textContent = shuffleText2(clueText, num);
+          setTimeout(() => shuffleClue(clueText, num - 1), 100);
+        }
+      }
+      function shuffleText(text, num) {
+        var a = text.split("");
+        for (let i = num; i > 0; i--) {
+          const j1 = Math.floor(Math.random() * (text.length - 1));
+          const j2 = Math.floor(Math.random() * (text.length - 1));
+          [a[j1], a[j2]] = [a[j2], a[j1]];
+        }
+        return a.join("");
+      }
+      function shuffleText2(text, num) {
+        var a = text.split("");
+        for (let i = text.length - 1; i > text.length - num; i--) {
+          const j = text.length - 1 - Math.floor(Math.random() * num);
+          [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a.join("");
       }
     </script>
     <style>
@@ -59,13 +88,13 @@
         font-size: 24px;
       }
       #next-clue {
-        font-size: 15vh;
+        font-size: 10vh;
       }
     </style>
   </head>
   <body>
     <form onsubmit="return onSubmit(event);">
-      <input id="answer" name="answer" />
+      <input id="answer" name="answer" placeholder="Type your answer" />
       <button type="submit">Submit answer</button>
     </form>
     <div id="next-clue" style="display: none">Next clue</div>
